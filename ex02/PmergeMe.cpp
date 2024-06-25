@@ -6,7 +6,7 @@
 /*   By: abenamar <abenamar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:54:20 by abenamar          #+#    #+#             */
-/*   Updated: 2024/06/24 22:33:49 by abenamar         ###   ########.fr       */
+/*   Updated: 2024/06/25 20:40:07 by abenamar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,16 @@ void PmergeMe::sort(std::deque<int> &deque, std::deque<std::deque<int> > &pairs,
 
 	/* https://en.wikipedia.org/wiki/Merge-insertion_sort#Algorithm -> step 2 */
 
-	for (i = 0; i < limit; ++i)
-		if (pairs.at(i).front() > pairs.at(i).back())
-			std::swap(pairs.at(i).front(), pairs.at(i).back());
+	std::deque<std::deque<int> >::iterator it;
+
+	for (i = 0, it = pairs.begin(); i < limit; ++i, ++it)
+		if (it->front() > it->back())
+			std::swap(it->front(), it->back());
 
 	/* https://en.wikipedia.org/wiki/Merge-insertion_sort#Algorithm -> step 3 */
 
-	std::deque<std::deque<int> >::iterator it = pairs.begin();
-
-	for (i = 0; i < limit; ++i)
-	{
+	for (i = 0, it = pairs.begin(); i < limit; ++i, ++it)
 		deque.push_back(it->back());
-
-		++it;
-	}
 
 	if (limit > 1)
 		PmergeMe::sort(deque, pairs, limit);
@@ -72,19 +68,15 @@ void PmergeMe::sort(std::deque<int> &deque, std::deque<std::deque<int> > &pairs,
 
 	for (i = 0; i < limit; ++i)
 	{
-		it = pairs.begin() + i;
-
-		for (j = i; j < limit; ++j)
+		for (j = i, it = pairs.begin() + i; j < limit; ++j, ++it)
 		{
 			if (deque.at(i) == it->back())
 			{
 				pairs.insert(pairs.begin() + i, *it);
-				pairs.erase(it + 1);
+				pairs.erase(pairs.begin() + j + 1);
 
 				break;
 			}
-
-			++it;
 		}
 	}
 
@@ -111,6 +103,7 @@ void PmergeMe::sort(std::deque<int> &deque, std::deque<std::deque<int> > &pairs,
 		for (i = end - 1; i >= 0; --i)
 		{
 			deque.insert(deque.begin() + PmergeMe::binary_search(it->front(), deque, pos + end - i), it->front());
+
 			it = pairs.erase(it) - 1;
 		}
 
@@ -150,16 +143,16 @@ void PmergeMe::sort(std::vector<int> &vector, std::vector<std::vector<int> > &pa
 
 	/* https://en.wikipedia.org/wiki/Merge-insertion_sort#Algorithm -> step 2 */
 
-	for (i = 0; i < limit; ++i)
-		if (pairs.at(i).front() > pairs.at(i).back())
-			std::swap(pairs.at(i).front(), pairs.at(i).back());
+	std::vector<std::vector<int> >::iterator it;
+
+	for (i = 0, it = pairs.end() - 1; i < limit; ++i, --it)
+		if (it->front() > it->back())
+			std::swap(it->front(), it->back());
 
 	/* https://en.wikipedia.org/wiki/Merge-insertion_sort#Algorithm -> step 3 */
 
-	std::vector<std::vector<int> >::iterator it = pairs.end();
-
-	for (i = 0; i < limit; ++i)
-		vector.push_back((--it)->back());
+	for (i = 0, it = pairs.end() - 1; i < limit; ++i, --it)
+		vector.push_back(it->back());
 
 	if (limit > 1)
 		PmergeMe::sort(vector, pairs, limit);
@@ -170,19 +163,15 @@ void PmergeMe::sort(std::vector<int> &vector, std::vector<std::vector<int> > &pa
 
 	for (i = 0; i < limit; ++i)
 	{
-		it = pairs.end() - i - 1;
-
-		for (j = i; j < limit; ++j)
+		for (j = i, it = pairs.end() - 1 - i; j < limit; ++j, --it)
 		{
 			if (vector.at(i) == it->back())
 			{
-				pairs.insert(pairs.end() - limit + i + 1, *it);
+				pairs.insert(pairs.end() - i, *it);
 				pairs.erase(it);
 
 				break;
 			}
-
-			--it;
 		}
 	}
 
@@ -209,6 +198,7 @@ void PmergeMe::sort(std::vector<int> &vector, std::vector<std::vector<int> > &pa
 		for (i = end - 1; i >= 0; --i)
 		{
 			vector.insert(vector.begin() + PmergeMe::binary_search(it->front(), vector, pos + end - i), it->front());
+
 			it = pairs.erase(it) - 1;
 		}
 
@@ -220,26 +210,28 @@ void PmergeMe::sort(std::vector<int> &vector, std::vector<std::vector<int> > &pa
 	return;
 }
 
-void PmergeMe::sort(std::deque<int> &sequence)
+std::clock_t PmergeMe::sort(std::deque<int> &sequence)
 {
+	std::clock_t t = std::clock();
 	std::deque<std::deque<int> > pairs;
 
 	if (sequence.size() == 0)
-		return;
+		return (0);
 
 	PmergeMe::sort(sequence, pairs, sequence.size());
 
-	return;
+	return (std::clock() - t);
 }
 
-void PmergeMe::sort(std::vector<int> &sequence)
+std::clock_t PmergeMe::sort(std::vector<int> &sequence)
 {
+	std::clock_t t = std::clock();
 	std::vector<std::vector<int> > pairs;
 
 	if (sequence.size() == 0)
-		return;
+		return (0);
 
 	PmergeMe::sort(sequence, pairs, sequence.size());
 
-	return;
+	return (std::clock() - t);
 }

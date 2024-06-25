@@ -6,7 +6,7 @@
 /*   By: abenamar <abenamar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:51:32 by abenamar          #+#    #+#             */
-/*   Updated: 2024/06/24 22:33:40 by abenamar         ###   ########.fr       */
+/*   Updated: 2024/06/25 20:36:33 by abenamar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 
 #include <algorithm>
 #include <cmath>
-#include <cstddef>
+#include <ctime>
 #include <deque>
 #include <vector>
 
 class PmergeMe
 {
 public:
-	static void sort(std::deque<int> &sequence);
-	static void sort(std::vector<int> &sequence);
+	static std::clock_t sort(std::deque<int> &sequence);
+	static std::clock_t sort(std::vector<int> &sequence);
 
 private:
 	PmergeMe(void) throw();
