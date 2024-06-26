@@ -6,7 +6,7 @@
 /*   By: abenamar <abenamar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:54:20 by abenamar          #+#    #+#             */
-/*   Updated: 2024/06/25 20:40:07 by abenamar         ###   ########.fr       */
+/*   Updated: 2024/06/26 22:23:00 by abenamar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,19 @@ void PmergeMe::sort(std::deque<int> &deque, std::deque<std::deque<int> > &pairs,
 
 	/* https://en.wikipedia.org/wiki/Merge-insertion_sort#Algorithm -> step 1 */
 
-	std::deque<std::deque<int> > tmp;
+	if (!even)
+	{
+		pairs.push_front(std::deque<int>(1, deque.front()));
+		deque.pop_front();
+	}
 
 	for (i = 0; i < limit; ++i)
 	{
-		tmp.push_back(std::deque<int>(1, deque.front()));
+		pairs.push_front(std::deque<int>(1, deque.front()));
 		deque.pop_front();
-		tmp.back().push_back(deque.front());
-		deque.pop_front();
-	}
-
-	if (!even)
-	{
-		tmp.push_back(std::deque<int>(1, deque.front()));
+		pairs.front().push_front(deque.front());
 		deque.pop_front();
 	}
-
-	pairs.insert(pairs.begin(), tmp.begin(), tmp.end());
 
 	/* https://en.wikipedia.org/wiki/Merge-insertion_sort#Algorithm -> step 2 */
 
@@ -123,23 +119,19 @@ void PmergeMe::sort(std::vector<int> &vector, std::vector<std::vector<int> > &pa
 
 	/* https://en.wikipedia.org/wiki/Merge-insertion_sort#Algorithm -> step 1 */
 
-	std::vector<std::vector<int> > tmp;
-
 	if (!even)
 	{
-		tmp.push_back(std::vector<int>(1, vector.back()));
+		pairs.push_back(std::vector<int>(1, vector.back()));
 		vector.pop_back();
 	}
 
 	for (i = 0; i < limit; ++i)
 	{
-		tmp.push_back(std::vector<int>(1, vector.back()));
+		pairs.push_back(std::vector<int>(1, vector.back()));
 		vector.pop_back();
-		tmp.back().push_back(vector.back());
+		pairs.back().push_back(vector.back());
 		vector.pop_back();
 	}
-
-	pairs.insert(pairs.end(), tmp.begin(), tmp.end());
 
 	/* https://en.wikipedia.org/wiki/Merge-insertion_sort#Algorithm -> step 2 */
 
