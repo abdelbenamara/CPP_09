@@ -35,19 +35,16 @@ class PmergeMe:
 
         even: bool = size % 2 == 0
         limit: int = size // 2
-        tmp: list[list[int]] = []
 
         # print(f'Inputs\t\t: {s}')
 
-        for i in range(limit):
-            tmp.append([s.pop(0), s.pop(0)])
-
         if not even:
-            tmp.append([s.pop(0)])
+            pairs.insert(0, [s.pop(0)])
+
+        for i in range(limit):
+            pairs.insert(0, [s.pop(0), s.pop(0)])
 
         # print(f' Step 1\t\t: {tmp}')
-
-        pairs[:0] = tmp
 
         for i in range(limit):
             if pairs[i][0] > pairs[i][1]:
@@ -76,7 +73,6 @@ class PmergeMe:
 
         e: int = 2
         pos: int = limit
-
         limit *= 2
         j = 2
 
