@@ -6,7 +6,7 @@
 /*   By: abenamar <abenamar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:54:20 by abenamar          #+#    #+#             */
-/*   Updated: 2024/06/26 22:23:00 by abenamar         ###   ########.fr       */
+/*   Updated: 2024/06/29 19:19:51 by abenamar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ void PmergeMe::sort(std::vector<int> &vector, std::vector<std::vector<int> > &pa
 			if (vector.at(i) == it->back())
 			{
 				pairs.insert(pairs.end() - i, *it);
-				pairs.erase(it);
+				pairs.erase(pairs.end() - j - 2);
 
 				break;
 			}
